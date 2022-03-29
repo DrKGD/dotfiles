@@ -1,0 +1,11 @@
+function grepe()
+	{ local pattern="$1"; shift; grep --color=always -E "$pattern|^" "$@" }
+
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias neovim="$HOME/.config/nvim/nvimlaunch.sh"
+alias wezcfg="$HOME/.config/wezterm/"
+alias nvimcfg="$HOME/.config/nvim/"
+alias restart="systemctl reboot"
+alias lt='ls --human-readable --size -1 -S --classify'
+alias ls='ls -F'
+alias ll='ls -lh'
