@@ -2,3 +2,7 @@
 	path = .config/nvim
 	url = git@github.com:DrKGD/ArchNvim.git
 	branch = main
+[submodule ".config/wezterm"]
+	path = .config/wezterm
+	url = git@github.com:DrKGD/ArchWezTerm.git
+	branch = main
