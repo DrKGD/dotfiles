@@ -6,3 +6,7 @@
 	path = .config/wezterm
 	url = ssh://git@github.com:DrKGD/ArchWezTerm.git
 	branch = main
+[submodule ".config/awesome"]
+	path = .config/awesome
+	url = ssh://git@github.com:DrKGD/ArchAwesome.git
+	branch = main
