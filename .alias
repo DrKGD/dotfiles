@@ -1,11 +1,38 @@
-function grepe()
+grepe()
 	{ local pattern="$1"; shift; grep --color=always -E "$pattern|^" "$@" }
 
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+# Start ssh-agent session
+ssh-auth() {
+    # Start the SSH agent only if not running
+    [[ -z $(ps | grep ssh-agent) ]] && echo $(ssh-agent) > /tmp/ssh-agent-data.sh
+
+    # Identify the running SSH agent
+    [[ -z $SSH_AGENT_PID ]] && source /tmp/ssh-agent-data.sh > /dev/null
+
+    # Authenticate (change key path or make a symlink if needed)
+    [[ -z $(ssh-add -l | grep "$HOME/.ssh/id_rsa") ]] && ssh-add
+	}
+
+# End ssh-agent if already running
+ssh-unauth() {
+		# Kill process and unset variable
+		ssh-agent -k && unset SSH_AGENT_PID
+	}
+
+# Wrappers
 alias neovim="$HOME/.config/nvim/nvimlaunch.sh"
-alias wezcfg="$HOME/.config/wezterm/"
-alias nvimcfg="$HOME/.config/nvim/"
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias restart="systemctl reboot"
+
+# Configurations 
+alias wezcfg="$HOME/.config/wezterm/"
+alias awecfg="$HOME/.config/awesome/"
+alias nvimcfg="$HOME/.config/nvim/"
+
+# LS 
 alias lt='ls --human-readable --size -1 -S --classify'
 alias ls='ls -F'
 alias ll='ls -lh'
+
+# Git
+alias gadd='git add -u'

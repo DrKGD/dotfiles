@@ -2,14 +2,21 @@
 
 echo "[DotFiles - Submodules Hook]"
 echo "  Password is required for private submodules..."
+echo "  Run ssh-auth if it keeps asking for password!"
 
+# Authenticate
 git submodule update --remote
 
 readonly gmod="$(git config --file .gitmodules --get-regexp path | awk '{print $2}')"
-echo "  Also updating modules to their latest commit...!"
+echo "  Updating modules to their latest pushed commit... (from .git)!"
+echo "  Local changes or commit are NOT pushed onto the repo!"
 echo "  Don't forget to check whether or not changes were committed..."
 echo "  Modules:"
 for m in $gmod; do printf "    ${m} "; git add $m; printf "... done!\n"; done
+
+echo "[DotFiles - Submodules Hook]"
+echo "  Automatically adding changes to detected changed repo files"
+git add -u
 
 echo;
 

@@ -1,12 +1,12 @@
 [submodule ".config/nvim"]
 	path = .config/nvim
-	url = ssh://git@github.com:DrKGD/ArchNvim.git
+	url = ../ArchNvim.git
 	branch = main
 [submodule ".config/wezterm"]
 	path = .config/wezterm
-	url = ssh://git@github.com:DrKGD/ArchWezTerm.git
+	url = ../ArchWezTerm.git
 	branch = main
 [submodule ".config/awesome"]
 	path = .config/awesome
-	url = ssh://git@github.com:DrKGD/ArchAwesome.git
+	url = ../ArchAwesome.git
 	branch = main
