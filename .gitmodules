@@ -6,7 +6,3 @@
 	path = .config/wezterm
 	url = ../ArchWezTerm.git
 	branch = main
-[submodule ".config/awesome"]
-	path = .config/awesome
-	url = ../ArchAwesome.git
-	branch = main
