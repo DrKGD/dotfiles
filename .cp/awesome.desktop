@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=awesome
+Comment=Highly configurable framework window manager
+TryExec=awesome
+Exec=/bin/sh -c "$HOME/.config/awesome/.$HOSTNAME"
+Type=Application

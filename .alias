@@ -1,5 +1,10 @@
+# Grepping 
 grepe()
 	{ local pattern="$1"; shift; grep --color=always -E "$pattern|^" "$@" }
+
+# Returns the pid
+gpid()
+	{ ps -aux | grep $1 }
 
 # Start ssh-agent session
 ssh-auth() {
@@ -16,18 +21,29 @@ ssh-auth() {
 # End ssh-agent if already running
 ssh-unauth() {
 		# Kill process and unset variable
-		ssh-agent -k && unset SSH_AGENT_PID
+		eval 'ssh-agent -k' 
 	}
 
 # Wrappers
 alias neovim="$HOME/.config/nvim/nvimlaunch.sh"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias restart="systemctl reboot"
+
+# Computer logoff
+alias restart="reboot"
+alias sayonara="sudo shutdown -h now"
+alias logoff="sudo systemctl restart sddm"
+
+# Edit this file
+alias aliases='neovim "$HOME/.alias"'
+alias readmeplenty='neovim "$HOME/README.md"'
 
 # Configurations 
 alias wezcfg="$HOME/.config/wezterm/"
 alias awecfg="$HOME/.config/awesome/"
 alias nvimcfg="$HOME/.config/nvim/"
+alias polycfg="$HOME/.config/polybar/"
+alias mpcfg="$HOME/.config/ncmpcpp/"
+alias i3cfg="$HOME/.config/i3/"
 
 # LS 
 alias lt='ls --human-readable --size -1 -S --classify'
@@ -36,3 +52,14 @@ alias ll='ls -lh'
 
 # Git
 alias gadd='git add -u'
+
+# Picom
+alias whichclass='xprop WM_CLASS'
+
+# Check Fonts
+alias fontmap='gucharmap'
+
+# Some useful alias 'cus I don't remember shit
+alias pac='sudo pacman'
+alias mp='ncmpcpp'
+
