@@ -30,12 +30,14 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 # Computer logoff
 alias restart="reboot"
-alias sayonara="sudo shutdown -h now"
+alias sayonara="shutdown -h now"
 alias logoff="sudo systemctl restart sddm"
 
 # Edit this file
 alias aliases='neovim "$HOME/.alias"'
 alias readmeplenty='neovim "$HOME/README.md"'
+alias my-zshrc='neovim "$HOME/.zshrc"'
+alias reload-my-zshrc='source "$HOME/.zshrc"'
 
 # Configurations 
 alias wezcfg="$HOME/.config/wezterm/"
@@ -44,6 +46,8 @@ alias nvimcfg="$HOME/.config/nvim/"
 alias polycfg="$HOME/.config/polybar/"
 alias mpcfg="$HOME/.config/ncmpcpp/"
 alias i3cfg="$HOME/.config/i3/"
+alias sk="$HOME/.config/scripts/"
+alias pdfcfg="$HOME/.config./sioyek/"
 
 # LS 
 alias lt='ls --human-readable --size -1 -S --classify'
@@ -53,13 +57,30 @@ alias ll='ls -lh'
 # Git
 alias gadd='git add -u'
 
-# Picom
-alias whichclass='xprop WM_CLASS'
-
-# Check Fonts
-alias fontmap='gucharmap'
-
 # Some useful alias 'cus I don't remember shit
+class() {
+	echo 'Select window within 2 seconds to get its detected class'
+	sleep 2;
+	echo $(xprop -id $(xdotool getactivewindow) WM_CLASS | awk 'NF {print $NF}' | tr -d '"')
+}
+
+name() {
+	echo 'Select window within 2 seconds to get its detected name'
+	sleep 2;
+	echo $(xprop -id $(xdotool getactivewindow) WM_NAME | cut -d '=' -f 2 | awk -F\" '{ print $2 }')
+}
+
+alias whichclass='class'
+alias whichname='name'
+alias whichcolor='gpick'
+alias fontmap='gucharmap'
 alias pac='sudo pacman'
 alias mp='ncmpcpp'
+alias viewpdf="sioyek"
+
+# Fix the terminal on binary display
+alias tfix='reset; stty sane; tput rs1; clear; echo -e "\033c"'
+alias pacmirror='reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist'
+
+
 
