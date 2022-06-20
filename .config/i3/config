@@ -1,0 +1,362 @@
+#### i3 Configuration
+### Startuo application Run picom
+exec_always --no-startup-id "picom -b --backend glx --experimental-backends"
+
+# Background image
+exec_always --no-startup-id "xwallpaper --no-randr --tile ~/.config/i3/static_bg.png" 
+
+# Run Alt Tab
+exec_always --no-startup-id "alttab -d 0 -p none -font \"xft:scientifica-12\" -t 128x60 -i 128x40 -fg \"#179aff\" -frame \"#ff9507\""
+					
+### Globals 
+## Mouse Behaviour(s)
+# Do not follow mouse
+focus_follows_mouse no
+
+# Don't move mouse on focus change
+mouse_warping none
+
+## Gaps, Borders
+for_window [class=".*"] border pixel 2, split horizontal 
+hide_edge_borders both 
+
+# Gaps between windows, gaps from top of the screen (polybar)
+gaps top 2
+gaps bottom 2
+gaps left 2
+gaps right 2
+gaps inner 6 
+
+## Colors
+# class										border  backgr. text    indicator child_border
+client.focused					#ffffff #ffffff #ffffff #179aff		#ff9507
+client.focused_inactive #ffffff #ffffff #ffffff #004ffd		#552f00
+client.unfocused				#ffffff #ffffff #ffffff #004ffd		#552f00
+client.urgent						#2f343a #900000 #ffffff #900000		#900000
+client.placeholder			#000000 #0c0c0c #ffffff #000000		#0c0c0c
+client.background				#ffffff
+
+# Allow moving between monitors
+force_focus_wrapping no
+
+### Variables
+## Scripts folder
+set $layouts $HOME/.config/i3$HOME/layouts/
+set $sk $HOME/.config/i3/sk
+
+## Set default applications
+set $browser "firefox"
+set $incognito "firefox --private-window --"
+set $terminal "wezterm"
+set $editor "nvim"
+set $runeditor "wezterm start nvim" 
+set $runmp "wezterm start ncmpcpp"
+
+## Modes
+set $launcher "run"
+set $mediacontrol "media control"
+set $launcher-system "system"
+set $edit "edit"
+set $ws-manager "ws-manager"
+set $ws-manager-save "ws-manager:save"
+set $ws-manager-load "ws-manager:load"
+set $i3_resurrect i3-resurrect
+
+## Setup workspaces
+# Monitor left
+set $ws-sx1 "default"
+
+# Monitor central
+set $ws-mi1 "CodeEnv"
+
+# Monitor right
+set $ws-rx1 "default"
+
+## Monitors 
+# Define monitors
+set $24tl DP-11
+set $27tm DVI-I-1
+set $24tr DVI-D-0
+
+# Assign workspaces
+# workspace $ws-sx1 output $24tl
+# workspace $ws-sx2 output $24tl
+# workspace $ws-sx3 output $24tl
+# workspace $ws-mi1 output $24mi
+# workspace $ws-mi2 output $24mi
+# workspace $ws-mi3 output $24mi
+# workspace $ws-rx1 output $24tr
+# workspace $ws-rx2 output $24tr
+# workspace $ws-rx3 output $24tr
+
+### Keybindings
+## Define keys 
+set $leader Mod4
+set $shift Shift 
+set $ctrl Ctrl 
+set $altkey Mod1 
+set $esc Escape
+set $enter Return
+
+## Mouse
+floating_modifier $leader
+
+
+## Move to the next output
+## BUG: Have no idea why foucs output left works and right does not
+bindsym $leader+Left exec --no-startup-id "i3-msg 'focus output left'"
+bindsym $leader+Right exec  --no-startup-id "i3-msg 'focus output right'"
+
+## Change focus
+bindsym $leader+h focus left
+bindsym $leader+j focus down
+bindsym $leader+k focus up
+bindsym $leader+l focus right
+
+## Move windows around around
+bindsym $leader+$shift+h move left
+bindsym $leader+$shift+j move down
+bindsym $leader+$shift+k move up
+bindsym $leader+$shift+l move right
+
+## Enter Modals 
+bindsym $leader+e mode $edit 
+bindsym $leader+w mode $ws-manager
+bindsym $leader+r mode $launcher
+bindsym $leader+p mode $mediacontrol
+
+bindsym $leader+$esc mode $launcher-system 
+bindsym $leader+$shift+r mode $launcher-system 
+
+# Enter fullscreen
+bindsym $leader+f fullscreen toggle
+
+# Run program
+bindsym $leader+slash exec "rofi -modi drun,run -show drun"
+
+# Show programs
+bindsym $leader+Tab exec rofi -show window
+
+# Toggle floating 
+bindsym $leader+$enter floating toggle
+
+# Kill current focussed window
+bindsym $leader++q kill
+bindsym $altkey+F4 kill
+
+# Reload configuration
+bindsym $leader+grave reload
+bindsym $leader+$shift+grave restart
+
+# Split vertical or horizontal 
+bindsym $leader+v split h
+bindsym $leader+s split v 
+
+# Switch to the workspace
+bindsym $leader+1 workspace 1
+bindsym $leader+2 workspace 10
+# bindsym $leader+2 workspace $ws-developer
+# bindsym $leader+3 workspace $ws-social
+# bindsym $leader+4 workspace $ws-browsing-2
+# bindsym $leader+5 workspace $ws-browsing-3
+#
+
+# Cycle between outputs 
+# TODO: Debug these
+# bindsym $leader+a exec i3-cycle next 
+# bindsym $leader+a focus output right 
+# bindsym $leader+$shift+bracketright focus output right 
+# bindsym $leader+bracketleft output prev 
+# bindsym $leader+bracketright output next 
+
+
+# Move workspace to the next or previous output 
+#bindsym $leader+$altkey+bracketleft move window to output prev, focus output prev 
+#bindsym $leader+$altkey+bracketright move window to output next, focus output next
+
+# move focused container to workspace
+# bindsym $leader+$shift+1 move container to workspace $ws-browsing-1
+# bindsym $leader+$shift+2 move container to workspace $ws-developer
+# bindsym $leader+$shift+3 move container to workspace $ws-social
+# bindsym $leader+$shift+4 move container to workspace $ws-browsing-2
+# bindsym $leader+$shift+5 move container to workspace $ws-browsing-3
+
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id $sk/volume_sanification.sh @DEFAULT_SINK@ +5
+bindsym XF86AudioLowerVolume exec --no-startup-id $sk/volume_sanification.sh @DEFAULT_SINK@ -5
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+### Modes
+## Edit window Size
+mode $edit {
+		# These bindings trigger as soon as you enter the resize mode
+
+		# Pressing left will shrink the window’s width.
+		# Pressing right will grow the window’s width.
+		# Pressing up will shrink the window’s height.
+		# Pressing down will grow the window’s height.
+		bindsym h resize shrink width 10 px or 10 ppt
+		bindsym j resize grow height 10 px or 10 ppt
+		bindsym k resize shrink height 10 px or 10 ppt
+		bindsym l resize grow width 10 px or 10 ppt
+
+		# same bindings, but for the arrow keys
+		bindsym Left resize shrink width 10 px or 10 ppt
+		bindsym Down resize grow height 10 px or 10 ppt
+		bindsym Up resize shrink height 10 px or 10 ppt
+		bindsym Right resize grow width 10 px or 10 ppt
+
+		# back to normal: Enter or Escape or $mod+r
+		bindsym $enter mode "default"
+		bindsym $esc mode "default"
+		bindsym $mod+r mode "default"
+		bindsym $leader+e mode "default"
+	}
+
+## Handle workspace(s)
+mode $ws-manager {
+		# Cycle between workspaces on the current output 
+		# bindsym n workspace next_on_output
+		# bindsym p workspace prev_on_output
+
+		# Switch to save mode
+		bindsym s mode $ws-manager-save 
+
+		# Switch to load mode
+		bindsym l mode $ws-manager-load
+
+
+		bindsym $shift+Delete [workspace=__focused__] kill
+
+		bindsym $enter mode "default"
+		bindsym $esc mode "default"
+		bindsym $leader+w mode "default"
+	}
+
+## Save up to 10 layouts
+mode $ws-manager-save {
+		bindsym 1 exec "$sk/savelayout.sh $layouts/1", mode "default"
+		# bindsym 1 exec "$i3_resurrect save --profile p1 --swallow=class", mode "default"
+		# bindsym 2 exec "$i3_resurrect save --profile p2 --swallow=class", mode "default"
+		# bindsym 3 exec "$i3_resurrect save --profile p3 --swallow=class", mode "default"
+		# bindsym 4 exec "$i3_resurrect save --profile p4 --swallow=class", mode "default"
+		# bindsym 5 exec "$i3_resurrect save --profile p5 --swallow=class", mode "default"
+		# bindsym 6 exec "$i3_resurrect save --profile p6 --swallow=class", mode "default"
+		# bindsym 7 exec "$i3_resurrect save --profile p7 --swallow=class", mode "default"
+		# bindsym 8 exec "$i3_resurrect save --profile p8 --swallow=class", mode "default"
+		# bindsym 9 exec "$i3_resurrect save --profile p9 --swallow=class", mode "default"
+		# bindsym 0 exec "$i3_resurrect save --profile p0 --swallow=class", mode "default"
+
+		bindsym $enter mode "default"
+		bindsym $esc mode "default"
+}
+
+## Load up to 10 layouts
+mode $ws-manager-load {
+		# bindsym 1 exec "$i3_resurrect restore --profile p1 --programs-only", mode "default"
+		# bindsym 2 exec "$i3_resurrect restore --profile p2 --programs-only", mode "default"
+		# bindsym 3 exec "$i3_resurrect restore --profile p3 --programs-only", mode "default"
+		# bindsym 4 exec "$i3_resurrect restore --profile p4 --programs-only", mode "default"
+		# bindsym 5 exec "$i3_resurrect restore --profile p5 --programs-only", mode "default"
+		# bindsym 6 exec "$i3_resurrect restore --profile p6 --programs-only", mode "default"
+		# bindsym 7 exec "$i3_resurrect restore --profile p7 --programs-only", mode "default"
+		# bindsym 8 exec "$i3_resurrect restore --profile p8 --programs-only", mode "default"
+		# bindsym 9 exec "$i3_resurrect restore --profile p9 --programs-only", mode "default"
+		# bindsym 0 exec "$i3_resurrect restore --profile p0 --programs-only", mode "default"
+
+		bindsym $enter mode "default"
+		bindsym $esc mode "default"
+}
+
+## Run program
+mode $launcher {
+		# Editor in home directory
+		bindsym e exec $runeditor, mode "default"
+
+		# Music player
+		bindsym p exec $runmp, mode "default"
+
+		# Telegram 
+		bindsym t exec telegram-desktop, mode "default"
+
+		# Terminal
+		bindsym $enter exec $terminal, mode "default"
+
+		# Browser
+		bindsym b exec $browser, mode "default"
+
+		# Browser in incognito 
+		bindsym $shift+b exec $incognito, mode "default"
+
+		bindsym $enter mode "default"
+		bindsym $esc mode "default"
+		bindsym $leader+r mode "default"
+	}
+
+
+## Media player control, requires mpDris2 for mpd
+mode $mediacontrol {
+		# Player play-pause 
+		bindsym space exec playerctl play-pause 
+
+		# Player control
+		bindsym Right exec playerctl next
+		bindsym Left exec playerctl previous
+
+		# Volume Control
+		bindsym equal exec playerctl volume +5
+		bindsym minus exec playerctl volume -5
+
+		bindsym $enter mode "default"
+		bindsym $esc mode "default"
+	}
+
+## System commands 
+mode $launcher-system {
+		# Volume Control
+		bindsym equal exec --no-startup-id $sk/volume_sanification.sh @DEFAULT_SINK@ +4
+		bindsym minus exec --no-startup-id $sk/volume_sanification.sh @DEFAULT_SINK@ -4
+
+		# logout 
+		bindsym s exec "i3-nagbar -t warning -m 'Do you really want to shutdown the computer?' -B 'Yes' 'shutdown -h now'"
+		bindsym l exec "i3-nagbar -t warning -m 'Do you really want to logout?' -B 'Yes' 'i3-msg exit'"
+
+		bindsym $enter mode "default"
+		bindsym $esc mode "default"
+		bindsym $leader+$esc mode "default"
+	}
+
+## Start programs
+
+# Font for window titles. Will also be used by the bar unless a different font
+	# is used in the bar {} block below.
+font pango:monospace 8
+
+# This font is widely installed, provides lots of unicode glyphs, right-to-left
+# text rendering and scalability on retina/hidpi displays (thanks to pango).
+#font pango:DejaVu Sans Mono 8
+
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+#
+bar {
+        status_command i3status
+}
