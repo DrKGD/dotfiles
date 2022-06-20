@@ -1,5 +1,42 @@
 # Deatharte .dotfiles
 
+# WIP 
+- [ ] Tutorial 
+	- [x] Prepare Arch installation
+	- [x] Earth (Orbit/Moon)
+	- [ ] No User Interaction, Full Installation Script
+	- [ ] Finalize setup with a single script
+		- [ ] Paru
+		- [ ] Drivers	and peripherals
+			- [ ] GPU and Monitors
+				- [x] Intel for LAPTOP-DRKGD, x11
+				- [ ] Nvidia for DESKTOP-DRKGD, x11
+					- [ ] xrand the monitors
+			- [ ] Logitech
+			- [ ] Bluetooth
+			- [ ] Home Printer
+			- [ ] Keyboard and Mouse
+				- [ ] Remap keys
+					- [ ] CAPS to L_CTRL
+					- [ ] L_CTRL to R_CTRL
+					- [ ] R_CTRL to VK
+					
+				- [ ]
+		- [x] Applications
+			- [x] Editor (nvim)
+			- [x] Browser (firefox)
+			- [x] PDFViewer (sioyek)
+			- [x] Telegram, Whatsapp
+			- [x] VLC
+		- [ ] Desktop Environment
+			- [ ] Configure fonts 
+			- [ ] Configure icons
+			- [ ] Configure theme(s)
+			- [x] Greeter (sddm) 
+				- [ ] Configure theme(s)
+			- [x] DE itself (i3)
+			- [x] Compositor (picom)
+
 # Tutorial(s)
 ## Format USB-Drive
 ```bash
@@ -106,13 +143,48 @@ pacstrap /mnt base linux linux-firmware
 # generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# mount new directory 
-arch-chroot /mnt
 ```
 
 7. Wrap up installation 
 ```bash
+# mount new directory 
+arch-chroot /mnt
+
+# run the script
 ./ArchLinux.install-script.sh
+
+# unmount
+umount -R /mnt
+```
+
+8. Finalizing installation
+```bash
+# Connect to the wifi
+sudo nmcli device wifi list
+sudo nmcli device wifi connect <SSID> password <PWD>
+
+# Install Paru 
+sudo pacman -S --needed base-devel git
+git clone https://aur.archlinux.org/paru.git /tmp/paru/
+cd /tmp/paru/
+makepkg -si
+
+```
+
+9. Install DE
+```bash
+# Install Drivers 
+# Laptop (xorg) (intel)
+sudo pacman -S mesa xorg-server
+
+# Install neovim (editor), wezterm (terminal emulator), sioyek (pdf)
+yes | paru -S --needed --noconfirm neovim-nightly-bin wezterm-nightly-bin sioyek
+
+# Install SDDM, i3, dmenu, firefox, picom
+# https://github.com/stuomas/delicious-sddm-theme
+yes | sudo pacman -S --needed --noconfirm sddm firefox dmenu picom
+
+# TODO: Missing, file manager
 ```
 
 
